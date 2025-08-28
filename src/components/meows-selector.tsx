@@ -181,7 +181,7 @@ export default function MeowsSelector() {
       </div>
           
       <div className="flex justify-center gap-4">
-        <Button className="bg-gradient-to-r from-primary/80 to-accent/80 hover:from-primary hover:to-accent text-primary-foreground" variant="outline" onClick={handleAddTeam}>
+        <Button className="font-bold bg-gradient-to-r from-primary/80 to-accent/80 hover:from-primary hover:to-accent text-primary-foreground" variant="outline" onClick={handleAddTeam}>
           <PlusCircle className="mr-2 h-4 w-4" />
           Add Another Team
         </Button>
@@ -226,10 +226,10 @@ export default function MeowsSelector() {
                 {pairings.map((pair, index) => (
                   <li
                     key={index}
-                    className="flex items-center justify-center text-lg font-medium p-4 rounded-lg bg-black/30 backdrop-blur-sm border border-white/10 shadow-lg gradient-border"
+                    className="flex items-center justify-center text-lg font-medium p-4 rounded-lg bg-black/50 backdrop-blur-sm border border-white/10 shadow-lg"
                   >
                     <span className="w-2/5 text-right truncate pr-4 font-subtext text-foreground">{pair[0]}</span>
-                    <span className="text-primary font-bold font-headline">VS</span>
+                    <span className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground font-headline text-sm shadow-md mx-2">VS</span>
                     <span className="w-2/5 text-left truncate pl-4 font-subtext text-foreground">{pair[1]}</span>
                   </li>
                 ))}
