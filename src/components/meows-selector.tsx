@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -228,11 +226,11 @@ export default function MeowsSelector() {
                 {pairings.map((pair, index) => (
                   <li
                     key={index}
-                    className="flex items-center justify-center text-lg font-medium p-4 rounded-lg bg-card-alt border shadow-sm gradient-border"
+                    className="flex items-center justify-center text-lg font-medium p-4 rounded-lg bg-black/30 backdrop-blur-sm border border-white/10 shadow-lg gradient-border"
                   >
-                    <span className="w-2/5 text-right truncate pr-4 font-subtext">{pair[0]}</span>
+                    <span className="w-2/5 text-right truncate pr-4 font-subtext text-foreground">{pair[0]}</span>
                     <span className="text-primary font-bold font-headline">VS</span>
-                    <span className="w-2/5 text-left truncate pl-4 font-subtext">{pair[1]}</span>
+                    <span className="w-2/5 text-left truncate pl-4 font-subtext text-foreground">{pair[1]}</span>
                   </li>
                 ))}
               </ul>
