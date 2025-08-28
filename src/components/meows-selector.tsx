@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { assignBye } from "@/ai/flows/assign-bye";
 import { Button } from "@/components/ui/button";
 import {
@@ -40,6 +40,19 @@ export default function MeowsSelector() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  useEffect(() => {
+    // Focus the last input when a new team is added
+    if (inputRefs.current.length > 0) {
+      const lastInput = inputRefs.current[inputRefs.current.length - 1];
+      if (lastInput) {
+        lastInput.focus();
+      }
+    }
+  }, [teams.length]);
+
+
   const handleAddTeam = () => {
     setTeams([...teams, { id: nextId, name: "" }]);
     setNextId(nextId + 1);
@@ -56,6 +69,14 @@ export default function MeowsSelector() {
       teams.map((team) => (team.id === id ? { ...team, name: newName } : team))
     );
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddTeam();
+    }
+  };
+
 
   const handleGeneratePairings = async () => {
     setIsLoading(true);
@@ -92,7 +113,6 @@ export default function MeowsSelector() {
         setPreviousByeTeam(byeResult.byeTeam);
         currentTeams = byeResult.updatedTeams;
       } else {
-        // If the number of teams is even, there's no bye, but we should clear any previous bye team
         setPreviousByeTeam(null);
       }
 
@@ -122,63 +142,56 @@ export default function MeowsSelector() {
   return (
     <div className="space-y-8">
       <header className="text-center">
-        <div className="flex justify-center items-center gap-4 mb-2">
-            <Cat className="h-10 w-10 text-primary" />
-            <h1 className="text-4xl font-bold font-headline">Meow's Selector</h1>
+        <div className="flex justify-center items-center gap-4 mb-4">
+            <Cat className="h-12 w-12 text-primary" />
+            <h1 className="text-5xl font-bold font-headline bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Meow's Selector</h1>
         </div>
-        <p className="text-muted-foreground">
+        <p className="font-subtext text-lg text-muted-foreground">
           Enter your teams and generate random pairings instantly.
         </p>
       </header>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Enter Teams</CardTitle>
-          <CardDescription>
-            Add the names of the teams participating.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {teams.map((team, index) => (
-              <div key={team.id} className="flex items-center gap-2">
-                <Label htmlFor={`team-${team.id}`} className="w-20">
-                  Team {index + 1}
-                </Label>
-                <Input
-                  id={`team-${team.id}`}
-                  type="text"
-                  placeholder={`Enter Team ${index + 1} Name`}
-                  value={team.name}
-                  onChange={(e) => handleTeamNameChange(team.id, e.target.value)}
-                  className="flex-grow"
-                />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleRemoveTeam(team.id)}
-                  disabled={teams.length <= 1}
-                  aria-label="Remove Team"
-                >
-                  <XCircle className="h-5 w-5 text-muted-foreground hover:text-destructive" />
-                </Button>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button variant="outline" onClick={handleAddTeam}>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add Another Team
-          </Button>
-        </CardFooter>
-      </Card>
       
-      <div className="flex justify-center">
+      <div className="space-y-4">
+      {teams.map((team, index) => (
+        <Card key={team.id} className="glassmorphism overflow-hidden transition-all duration-300 ease-in-out">
+            <div className="p-4 flex items-center gap-4">
+              <Label htmlFor={`team-${team.id}`} className="font-subtext text-lg w-24">
+                Team {index + 1}
+              </Label>
+              <Input
+                id={`team-${team.id}`}
+                ref={el => inputRefs.current[index] = el}
+                type="text"
+                placeholder={`Enter Team ${index + 1} Name`}
+                value={team.name}
+                onChange={(e) => handleTeamNameChange(team.id, e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="flex-grow bg-transparent border-0 text-lg placeholder:font-subtext focus:ring-0"
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleRemoveTeam(team.id)}
+                disabled={teams.length <= 1}
+                aria-label="Remove Team"
+              >
+                <XCircle className="h-6 w-6 text-muted-foreground hover:text-destructive" />
+              </Button>
+            </div>
+        </Card>
+      ))}
+      </div>
+          
+      <div className="flex justify-center gap-4">
+        <Button className="bg-gradient-to-r from-primary/80 to-accent/80 hover:from-primary hover:to-accent text-primary-foreground" variant="outline" onClick={handleAddTeam}>
+          <PlusCircle className="mr-2 h-4 w-4" />
+          Add Another Team
+        </Button>
         <Button
           size="lg"
           onClick={handleGeneratePairings}
           disabled={validTeamsCount < 2 || isLoading}
+          className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-bold"
         >
           {isLoading ? (
             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -192,22 +205,22 @@ export default function MeowsSelector() {
       {error && (
         <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
+          <AlertTitle className="font-headline">Error</AlertTitle>
+          <AlertDescription className="font-subtext">{error}</AlertDescription>
         </Alert>
       )}
 
       {(pairings.length > 0 || byeTeam) && (
-        <Card>
+        <Card className="glassmorphism">
           <CardHeader>
-            <CardTitle>Generated Matchups</CardTitle>
+            <CardTitle className="font-headline text-center text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Generated Matchups</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6 text-center">
             {byeTeam && (
               <div className="flex flex-col items-center gap-2 rounded-md border border-dashed border-accent p-4 bg-accent/10">
                 <Coffee className="h-8 w-8 text-primary" />
-                <p className="text-sm text-muted-foreground">Bye Round</p>
-                <p className="text-xl font-bold text-primary">{byeTeam}</p>
+                <p className="text-sm font-subtext text-muted-foreground">Bye Round</p>
+                <p className="text-xl font-bold font-headline text-primary">{byeTeam}</p>
               </div>
             )}
             {pairings.length > 0 && (
@@ -215,11 +228,11 @@ export default function MeowsSelector() {
                 {pairings.map((pair, index) => (
                   <li
                     key={index}
-                    className="flex items-center justify-center text-lg font-medium p-4 rounded-lg bg-card-alt border shadow-sm"
+                    className="flex items-center justify-center text-lg font-medium p-4 rounded-lg bg-card-alt border shadow-sm gradient-border"
                   >
-                    <span className="w-2/5 text-right truncate pr-4">{pair[0]}</span>
-                    <span className="text-primary font-bold">VS</span>
-                    <span className="w-2/5 text-left truncate pl-4">{pair[1]}</span>
+                    <span className="w-2/5 text-right truncate pr-4 font-subtext">{pair[0]}</span>
+                    <span className="text-primary font-bold font-headline">VS</span>
+                    <span className="w-2/5 text-left truncate pl-4 font-subtext">{pair[1]}</span>
                   </li>
                 ))}
               </ul>
