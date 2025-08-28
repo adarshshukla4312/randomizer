@@ -115,9 +115,9 @@
     100% { background-position: 0% 50%; }
   }
   .animated-gradient-bg {
-    background: linear-gradient(-45deg, hsl(var(--background)), #1e2a5e, #4a2f64, #1c1c3c);
+    background: linear-gradient(-45deg, hsl(222, 44%, 15%), hsl(240, 30%, 10%), hsl(260, 35%, 12%), hsl(222, 44%, 15%));
     background-size: 400% 400%;
-    animation: gradient-bg 15s ease infinite;
+    animation: gradient-bg 20s ease infinite;
   }
 
   @keyframes card-fade-in {
