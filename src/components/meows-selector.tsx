@@ -141,8 +141,7 @@ export default function MeowsSelector() {
     <div className="space-y-8">
       <header className="text-center">
         <div className="flex justify-center items-center gap-4 mb-4">
-            <Cat className="h-12 w-12 text-primary" />
-            <h1 className="text-5xl font-bold font-headline bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Meow's Selector</h1>
+            <h1 className="text-5xl font-bold font-headline bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent whitespace-nowrap">Meow's Selector</h1>
         </div>
         <p className="font-subtext text-lg text-muted-foreground">
           Enter your teams and generate random pairings instantly.
@@ -180,7 +179,7 @@ export default function MeowsSelector() {
       ))}
       </div>
           
-      <div className="flex justify-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-center gap-4">
         <Button className="font-bold bg-gradient-to-r from-primary/80 to-accent/80 hover:from-primary hover:to-accent text-primary-foreground transition-all duration-300 hover:shadow-lg hover:shadow-primary/20" variant="outline" onClick={handleAddTeam}>
           <PlusCircle className="mr-2 h-4 w-4" />
           Add Another Team
