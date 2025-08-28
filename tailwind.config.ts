@@ -13,7 +13,7 @@ export default {
         body: ['Vend Sans', 'sans-serif'],
         headline: ['Chiron GoRound TC', 'sans-serif'],
         subtext: ['Vend Sans', 'sans-serif'],
-        button: ['Roboto Condensed', 'sans-serif'],
+        button: ['Rubik', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {

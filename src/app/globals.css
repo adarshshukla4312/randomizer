@@ -13,8 +13,8 @@
     --popover: 222 84% 5%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 310 89% 60%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 296 73% 90%;
+    --primary-foreground: 222 84% 5%;
 
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
@@ -22,15 +22,15 @@
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
 
-    --accent: 250 80% 70%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 33 78% 91%;
+    --accent-foreground: 222 84% 5%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 25%;
     --input: 222 70% 10%;
-    --ring: 310 89% 70%;
+    --ring: 296 73% 90%;
 
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -51,8 +51,8 @@
     --popover: 222 84% 5%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 310 89% 60%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 296 73% 90%;
+    --primary-foreground: 222 84% 5%;
 
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
@@ -60,15 +60,15 @@
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
 
-    --accent: 250 80% 70%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 33 78% 91%;
+    --accent-foreground: 222 84% 5%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 25%;
     --input: 222 70% 10%;
-    --ring: 310 89% 70%;
+    --ring: 296 73% 90%;
 
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -105,5 +105,27 @@
     margin: -1px;
     border-radius: inherit;
     background: linear-gradient(to right, hsl(var(--primary)), hsl(var(--accent)));
+  }
+}
+
+@layer utilities {
+  @keyframes gradient-bg {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .animated-gradient-bg {
+    background: linear-gradient(-45deg, hsl(var(--background)), #1e2a5e, #4a2f64, #1c1c3c);
+    background-size: 400% 400%;
+    animation: gradient-bg 15s ease infinite;
+  }
+
+  @keyframes card-fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-fade-in {
+    animation: card-fade-in 0.5s ease-out forwards;
   }
 }

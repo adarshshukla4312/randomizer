@@ -151,7 +151,7 @@ export default function MeowsSelector() {
       
       <div className="space-y-4">
       {teams.map((team, index) => (
-        <Card key={team.id} className="glassmorphism overflow-hidden transition-all duration-300 ease-in-out">
+        <Card key={team.id} className="glassmorphism overflow-hidden card-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
             <div className="p-4 flex items-center gap-4">
               <Label htmlFor={`team-${team.id}`} className="font-subtext text-lg w-24">
                 Team {index + 1}
@@ -181,7 +181,7 @@ export default function MeowsSelector() {
       </div>
           
       <div className="flex justify-center gap-4">
-        <Button className="font-bold bg-gradient-to-r from-primary/80 to-accent/80 hover:from-primary hover:to-accent text-primary-foreground" variant="outline" onClick={handleAddTeam}>
+        <Button className="font-bold bg-gradient-to-r from-primary/80 to-accent/80 hover:from-primary hover:to-accent text-primary-foreground transition-all duration-300 hover:shadow-lg hover:shadow-primary/20" variant="outline" onClick={handleAddTeam}>
           <PlusCircle className="mr-2 h-4 w-4" />
           Add Another Team
         </Button>
@@ -189,7 +189,7 @@ export default function MeowsSelector() {
           size="lg"
           onClick={handleGeneratePairings}
           disabled={validTeamsCount < 2 || isLoading}
-          className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-bold"
+          className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-primary-foreground font-bold transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
         >
           {isLoading ? (
             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -209,7 +209,7 @@ export default function MeowsSelector() {
       )}
 
       {(pairings.length > 0 || byeTeam) && (
-        <Card className="glassmorphism">
+        <Card className="glassmorphism card-fade-in">
           <CardHeader>
             <CardTitle className="font-headline text-center text-2xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Generated Matchups</CardTitle>
           </CardHeader>
@@ -229,7 +229,7 @@ export default function MeowsSelector() {
                     className="flex items-center justify-center text-lg font-medium p-4 rounded-lg bg-black/50 backdrop-blur-sm border border-white/10 shadow-lg"
                   >
                     <span className="w-2/5 text-right truncate pr-4 font-subtext text-foreground">{pair[0]}</span>
-                    <span className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground font-headline text-sm shadow-md mx-2">VS</span>
+                    <span className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground font-headline text-sm shadow-md mx-2 transition-transform hover:scale-110">VS</span>
                     <span className="w-2/5 text-left truncate pl-4 font-subtext text-foreground">{pair[1]}</span>
                   </li>
                 ))}
