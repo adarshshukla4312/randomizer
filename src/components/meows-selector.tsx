@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { assignBye } from "@/ai/flows/assign-bye";
+import { generatePairings as generatePairingsFlow } from "@/ai/flows/generate-pairings";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -114,22 +115,15 @@ export default function MeowsSelector() {
         setPreviousByeTeam(null);
       }
 
-      // Fisher-Yates shuffle
-      for (let i = currentTeams.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [currentTeams[i], currentTeams[j]] = [currentTeams[j], currentTeams[i]];
+      if (currentTeams.length > 0) {
+        const pairingResult = await generatePairingsFlow({ teams: currentTeams });
+        setPairings(pairingResult.pairings);
+      } else {
+        setPairings([]);
       }
-
-      const newPairings: Pairing[] = [];
-      for (let i = 0; i < currentTeams.length; i += 2) {
-        if (currentTeams[i + 1]) {
-          newPairings.push([currentTeams[i], currentTeams[i + 1]]);
-        }
-      }
-      setPairings(newPairings);
     } catch (e) {
       console.error(e);
-      setError("An AI error occurred while assigning a bye. Please try again.");
+      setError("An AI error occurred while generating pairings. Please try again.");
     } finally {
       setIsLoading(false);
     }
