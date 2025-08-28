@@ -1,7 +1,7 @@
 'use server';
 
 /**
- * @fileOverview Creates random pairings from a list of teams.
+ * @fileOverview Creates random pairings from a list of teams using a generative model.
  *
  * - generatePairings - A function that handles creating random pairings.
  * - GeneratePairingsInput - The input type for the generatePairings function.
@@ -37,26 +37,21 @@ export async function generatePairings(
   return generatePairingsFlow(input);
 }
 
+const generatePairingsPrompt = ai.definePrompt({
+  name: 'generatePairingsPrompt',
+  input: {schema: GeneratePairingsInputSchema},
+  output: {schema: GeneratePairingsOutputSchema},
+  prompt: `From the provided list of teams ({{teams}}), create random pairings. Ensure that the pairings are completely random and avoid any discernible patterns. Each team should appear in only one pairing.`,
+});
+
 const generatePairingsFlow = ai.defineFlow(
   {
     name: 'generatePairingsFlow',
     inputSchema: GeneratePairingsInputSchema,
     outputSchema: GeneratePairingsOutputSchema,
   },
-  async ({teams}) => {
-    // Fisher-Yates shuffle for robust randomization
-    for (let i = teams.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [teams[i], teams[j]] = [teams[j], teams[i]];
-    }
-
-    const pairings: [string, string][] = [];
-    for (let i = 0; i < teams.length; i += 2) {
-      if (teams[i + 1]) {
-        pairings.push([teams[i], teams[i + 1]]);
-      }
-    }
-
-    return {pairings};
+  async input => {
+    const {output} = await generatePairingsPrompt(input);
+    return output!;
   }
 );
