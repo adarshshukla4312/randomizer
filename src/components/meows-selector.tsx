@@ -152,8 +152,8 @@ export default function MeowsSelector() {
       <div className="space-y-4">
       {teams.map((team, index) => (
         <Card key={team.id} className="glassmorphism overflow-hidden card-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
-            <div className="p-4 flex items-center gap-4">
-              <Label htmlFor={`team-${team.id}`} className="font-subtext text-lg w-24">
+            <div className="p-4 flex items-center gap-2 sm:gap-4">
+              <Label htmlFor={`team-${team.id}`} className="font-team text-lg w-20 sm:w-24 shrink-0">
                 Team {index + 1}
               </Label>
               <Input
@@ -164,7 +164,7 @@ export default function MeowsSelector() {
                 value={team.name}
                 onChange={(e) => handleTeamNameChange(team.id, e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="flex-grow bg-transparent border-0 text-lg placeholder:font-subtext focus:ring-0"
+                className="flex-grow bg-transparent border-0 text-lg placeholder:font-subtext focus:ring-0 font-team"
               />
               <Button
                 variant="ghost"
@@ -218,7 +218,7 @@ export default function MeowsSelector() {
               <div className="flex flex-col items-center gap-2 rounded-md border border-dashed border-accent p-4 bg-accent/10">
                 <Coffee className="h-8 w-8 text-primary" />
                 <p className="text-sm font-subtext text-muted-foreground">Bye Round</p>
-                <p className="text-xl font-bold font-headline text-primary">{byeTeam}</p>
+                <p className="text-xl font-bold font-team text-primary">{byeTeam}</p>
               </div>
             )}
             {pairings.length > 0 && (
@@ -226,11 +226,11 @@ export default function MeowsSelector() {
                 {pairings.map((pair, index) => (
                   <li
                     key={index}
-                    className="flex items-center justify-center text-lg font-medium p-4 rounded-lg bg-black/50 backdrop-blur-sm border border-white/10 shadow-lg"
+                    className="flex items-center justify-center text-lg font-medium p-2 sm:p-4 rounded-lg bg-black/50 backdrop-blur-sm border border-white/10 shadow-lg"
                   >
-                    <span className="w-2/5 text-right truncate pr-4 font-subtext text-foreground">{pair[0]}</span>
+                    <span className="w-2/5 text-right truncate pr-2 sm:pr-4 font-team text-foreground">{pair[0]}</span>
                     <span className="flex-shrink-0 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground font-headline text-sm shadow-md mx-2 transition-transform hover:scale-110">VS</span>
-                    <span className="w-2/5 text-left truncate pl-4 font-subtext text-foreground">{pair[1]}</span>
+                    <span className="w-2/5 text-left truncate pl-2 sm:pl-4 font-team text-foreground">{pair[1]}</span>
                   </li>
                 ))}
               </ul>

@@ -15,6 +15,7 @@ export default {
         subtext: ['Vend Sans', 'sans-serif'],
         button: ['Rubik', 'sans-serif'],
         code: ['monospace'],
+        team: ['Tirra', 'serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
