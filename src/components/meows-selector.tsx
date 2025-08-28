@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { assignBye } from "@/ai/flows/assign-bye";
-import { generatePairings as generatePairingsFlow } from "@/ai/flows/generate-pairings";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -29,6 +27,16 @@ type Team = {
 };
 
 type Pairing = [string, string];
+
+// Fisher-Yates shuffle algorithm
+const shuffleArray = (array: string[]) => {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+};
 
 export default function MeowsSelector() {
   const [teams, setTeams] = useState<Team[]>([{ id: 1, name: "" }]);
@@ -94,36 +102,46 @@ export default function MeowsSelector() {
     }
     
     // Simple deduplication
-    currentTeams = [...new Set(currentTeams)];
-    if(currentTeams.length !== teams.filter(t => t.name.trim() !== "").length) {
+    const uniqueTeams = [...new Set(currentTeams)];
+    if(uniqueTeams.length !== currentTeams.length) {
       setError("Duplicate team names are not allowed. Please provide unique names.");
       setIsLoading(false);
       return;
     }
+    currentTeams = uniqueTeams;
 
 
+    // Simulate thinking time
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
     try {
       if (currentTeams.length % 2 !== 0) {
-        const byeResult = await assignBye({
-          teams: currentTeams,
-          previousByeTeam: previousByeTeam || undefined,
-        });
-        setByeTeam(byeResult.byeTeam);
-        setPreviousByeTeam(byeResult.byeTeam);
-        currentTeams = byeResult.updatedTeams;
+        // Assign bye
+        const possibleByeTeams = currentTeams.filter(t => t !== previousByeTeam);
+        const selectedByeTeam = possibleByeTeams[Math.floor(Math.random() * possibleByeTeams.length)];
+        
+        setByeTeam(selectedByeTeam);
+        setPreviousByeTeam(selectedByeTeam);
+        currentTeams = currentTeams.filter(t => t !== selectedByeTeam);
       } else {
         setPreviousByeTeam(null);
       }
 
       if (currentTeams.length > 0) {
-        const pairingResult = await generatePairingsFlow({ teams: currentTeams });
-        setPairings(pairingResult.pairings);
+        const shuffledTeams = shuffleArray(currentTeams);
+        const newPairings: Pairing[] = [];
+        for (let i = 0; i < shuffledTeams.length; i += 2) {
+            if(shuffledTeams[i+1]) {
+                newPairings.push([shuffledTeams[i], shuffledTeams[i + 1]]);
+            }
+        }
+        setPairings(newPairings);
       } else {
         setPairings([]);
       }
     } catch (e) {
       console.error(e);
-      setError("An AI error occurred while generating pairings. Please try again.");
+      setError("An error occurred while generating pairings. Please try again.");
     } finally {
       setIsLoading(false);
     }
