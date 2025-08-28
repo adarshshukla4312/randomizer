@@ -1,5 +1,3 @@
-# Firebase Studio
+# Meow's Selector 
 
-This is a NextJS starter in Firebase Studio.
-
-To get started, take a look at src/app/page.tsx.
+This is a simple web app to randomly match syndicates against one another 
