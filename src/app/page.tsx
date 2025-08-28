@@ -1,3 +1,11 @@
+import MeowsSelector from '@/components/meows-selector';
+
 export default function Home() {
-  return <></>;
+  return (
+    <main className="flex min-h-screen w-full flex-col items-center bg-background py-12 px-4">
+      <div className="w-full max-w-2xl">
+        <MeowsSelector />
+      </div>
+    </main>
+  );
 }
